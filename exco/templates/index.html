@@ -25,8 +25,8 @@
                             <div class="text-sm text-gray-500">{{ 'Solution Available' if resource.has_solution else 'No Solution' }}</div>
                         </div>
                         <div>
-                            <a href="{{ url_for('static', filename='data/' + resource.filename) }}" target="_blank" class="text-blue-600 hover:text-blue-900">View</a>
-                            <a href="{{ url_for('file_details', file_id=resource.id) }}">View Details and Discussion</a>
+                            <a href="{{ url_for('static', filename='data/' + resource.filename) }}" target="_blank" class="text-blue-600 hover:text-blue-900">Download</a>
+                            <a href="{{ url_for('file_details', file_id=resource.id) }}">Discussion</a>
                         </div>
                     </div>
                     {% if resource.description %}
