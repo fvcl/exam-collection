@@ -1,0 +1,13 @@
+name: Deployment Trigger
+
+on: 
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to exco.fvcl.ch
+      run: |
+        curl ${{ secrets.DEPLOY_URL }}
