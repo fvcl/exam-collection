@@ -6,12 +6,15 @@ from wtforms import StringField, FileField, TextAreaField, BooleanField, Integer
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
 
+# make db directory
+os.makedirs('db', exist_ok=True)
+
 app = Flask(__name__)
 app.debug = True
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = 'super secret'
 app.config['UPLOAD_FOLDER'] = 'static/data'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'exco.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exco.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
