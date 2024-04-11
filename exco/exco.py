@@ -69,7 +69,7 @@ def upload_page():
         has_solution = form.has_solution.data
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # save file to FTP server
-        send_file_to_ftp_server('static/data/' + filename)
+        send_file_to_ftp_server(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course,
                             has_solution=has_solution)
         db.session.add(resource)
