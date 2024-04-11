@@ -9,11 +9,12 @@ def sync_files():
     ftp.login(username, password)
     ftp.cwd('pdfs')
     files = os.listdir('static/data')
+    full_path = os.path.join(os.getcwd(), 'static/data')
     for file in files:
         print(file)
         if file not in ftp.nlst():
             print('Sending file to FTP server: ' + file)
-            with open('static/data/' + file, 'rb') as f:
+            with open(full_path + file, 'rb') as f:
                 ftp.storbinary('STOR ' + file, f)
 
 def send_file_to_ftp_server(file):
