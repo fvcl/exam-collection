@@ -25,8 +25,7 @@ def send_file_to_ftp_server(file):
     ftp.login(username, password)
     ftp.cwd('pdfs')
     print('Sending file to FTP server: ' + file)
-    print(os.listdir('static/data'))
-    
+    file = file.split('/')[-1]
     with open(file, 'rb') as f:
         ftp.storbinary('STOR ' + file, f)
 
