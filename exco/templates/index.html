@@ -2,8 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Library</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-xl font-semibold">Resource Library</h1>
+            <a href="{{ url_for('upload_page') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">Upload New Resource</a>
+        </div>
+        <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
+            <ul class="divide-y divide-gray-200">
+                {% for resource in resources %}
+                <li class="px-6 py-4">
+                    <div class="flex justify-between">
+                        <div>
+                            <div class="text-sm font-medium text-gray-900">{{ resource.filename }}</div>
+                            <div class="text-sm text-gray-500">{{ resource.uploader }}, {{ resource.year }}</div>
+                            <div class="text-sm text-gray-500">{{ resource.course }}</div>
+                            <div class="text-sm text-gray-500">{{ 'Solution Available' if resource.has_solution else 'No Solution' }}</div>
+                        </div>
+                        <div>
+                            <a href="{{ url_for('static', filename='data/' + resource.filename) }}" target="_blank" class="text-blue-600 hover:text-blue-900">View</a>
+                        </div>
+                    </div>
+                    {% if resource.description %}
+                    <p class="mt-2 text-sm text-gray-600">{{ resource.description }}</p>
+                    {% endif %}
+                </li>
+                {% else %}
+                <li class="px-6 py-4">No resources found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
