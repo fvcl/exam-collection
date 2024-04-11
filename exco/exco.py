@@ -6,21 +6,22 @@ from wtforms import StringField, FileField, TextAreaField, BooleanField, Integer
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
 
-
 app = Flask(__name__)
 app.debug = True
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = 'super secret'
 app.config['UPLOAD_FOLDER'] = 'static/data'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'exco.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exco.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
 # get logger to write into gunicorn log
 import logging
+
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
+
 
 class UploadForm(FlaskForm):
     file = FileField('File', validators=[FileRequired()])
@@ -30,6 +31,7 @@ class UploadForm(FlaskForm):
     course = StringField('Course')
     has_solution = BooleanField('Has Solution')
 
+
 class Resource(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(128), nullable=False)
@@ -38,6 +40,7 @@ class Resource(db.Model):
     year = db.Column(db.Integer, nullable=True)
     course = db.Column(db.String(128), nullable=True)
     has_solution = db.Column(db.Boolean, nullable=False)
+
 
 # Create the database tables
 with app.app_context():
@@ -62,16 +65,14 @@ def upload_page():
         year = form.year.data
         course = form.course.data
         has_solution = form.has_solution.data
-        # print the current working directory
-        print(os.getcwd())
-        print(os.listdir())
-
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course, has_solution=has_solution)
+        resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course,
+                            has_solution=has_solution)
         db.session.add(resource)
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
+
 
 @app.route('/file/<int:file_id>')
 def file_details(file_id):
