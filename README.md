@@ -4,8 +4,6 @@
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 [![issues - exam-collection](https://img.shields.io/github/issues/fvcl/exam-collection)](https://github.com/fvcl/exam-collection/issues)
 
-[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](/docs/ "Go to project documentation")
-
 
 ## License
 
