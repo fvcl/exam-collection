@@ -17,6 +17,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+# get logger to write into gunicorn log
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 class UploadForm(FlaskForm):
     file = FileField('File', validators=[FileRequired()])
@@ -58,6 +62,10 @@ def upload_page():
         year = form.year.data
         course = form.course.data
         has_solution = form.has_solution.data
+        # print the current working directory
+        print(os.getcwd())
+        print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        log.debug(os.getcwd() + " " + os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course, has_solution=has_solution)
         db.session.add(resource)
