@@ -7,7 +7,7 @@
 
 ## License
 
-Released under [MIT](/LICENSE) by [@fvcl](https://github.com/fvcl).
+Released under [BSD 3-Clause](/LICENSE) by [@fvcl](https://github.com/fvcl).
 
 # exam-collection
 Code for the exam collection website
