@@ -5,8 +5,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, FileField, TextAreaField, BooleanField, IntegerField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
-
-from exco.ftp_sync import send_file_to_ftp_server, get_files_from_ftp_server
+try:
+    from exco.ftp_sync import send_file_to_ftp_server, get_files_from_ftp_server
+except ImportError:
+    from ftp_sync import send_file_to_ftp_server, get_files_from_ftp_server
 
 
 # make directories
