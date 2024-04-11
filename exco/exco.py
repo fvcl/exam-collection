@@ -6,25 +6,22 @@ from wtforms import StringField, FileField, TextAreaField, BooleanField, Integer
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
 
-# make db directory
+from exco.ftp_sync import send_file_to_ftp_server, get_files_from_ftp_server
+
+
+# make directories
 os.makedirs('db', exist_ok=True)
+os.makedirs('static/data', exist_ok=True)
 
 app = Flask(__name__)
 app.debug = True
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = 'super secret'
 app.config['UPLOAD_FOLDER'] = 'static/data'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exco.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
-
-# get logger to write into gunicorn log
-import logging
-
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
-
+get_files_from_ftp_server()
 
 class UploadForm(FlaskForm):
     file = FileField('File', validators=[FileRequired()])
@@ -69,6 +66,8 @@ def upload_page():
         course = form.course.data
         has_solution = form.has_solution.data
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # save file to FTP server
+        send_file_to_ftp_server('static/data/' + filename)
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course,
                             has_solution=has_solution)
         db.session.add(resource)
