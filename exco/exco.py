@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.debug = True
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = 'super secret'
-app.config['UPLOAD_FOLDER'] = 'exco/static/data'
+app.config['UPLOAD_FOLDER'] = 'static/data'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'exco.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -66,7 +66,7 @@ def upload_page():
         print(os.getcwd())
         print(os.listdir())
 
-        file.save(os.path.join("/workspace", app.config['UPLOAD_FOLDER'], filename))
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course, has_solution=has_solution)
         db.session.add(resource)
         db.session.commit()
