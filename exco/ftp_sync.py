@@ -10,6 +10,7 @@ def sync_files():
     ftp.cwd('pdfs')
     files = os.listdir('static/data')
     full_path = os.path.join(os.getcwd(), 'static/data')
+    print(full_path)
     for file in files:
         print(file)
         if file not in ftp.nlst():
