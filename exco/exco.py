@@ -73,6 +73,11 @@ def upload_page():
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
 
+@app.route('/file/<int:file_id>')
+def file_details(file_id):
+    resource = Resource.query.get_or_404(file_id)  # Fetch the specific file or return 404
+    return render_template('file_details.html', resource=resource)
+
 
 if __name__ == '__main__':
     app.run()

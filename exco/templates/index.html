@@ -26,6 +26,7 @@
                         </div>
                         <div>
                             <a href="{{ url_for('static', filename='data/' + resource.filename) }}" target="_blank" class="text-blue-600 hover:text-blue-900">View</a>
+                            <a href="{{ url_for('file_details', file_id=resource.id) }}">View Details and Discussion</a>
                         </div>
                     </div>
                     {% if resource.description %}
