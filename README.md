@@ -1,5 +1,4 @@
 # FVCL Study Material Collection
-_Repo metadata_
 
 [![Deployment](https://github.com/fvcl/exam-collection/workflows/Deployment%20Trigger/badge.svg)](https://github.com/fvcl/exam-collection/actions?query=workflow:"Deployment+Trigger")
 [![GitHub tag](https://img.shields.io/github/tag/fvcl/exam-collection?include_prereleases=&sort=semver&color=blue)](https://github.com/fvcl/exam-collection/releases/)
