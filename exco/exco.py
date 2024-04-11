@@ -65,7 +65,8 @@ def upload_page():
         # print the current working directory
         print(os.getcwd())
         print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        log.debug(os.getcwd() + " " + os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        log.debug(os.getcwd())
+        log.debug(os.listdir())
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course, has_solution=has_solution)
         db.session.add(resource)
