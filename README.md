@@ -6,16 +6,6 @@ _Repo metadata_
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 [![issues - exam-collection](https://img.shields.io/github/issues/fvcl/exam-collection)](https://github.com/fvcl/exam-collection/issues)
 
-_Call-to-Action buttons_
-
-<div align="center">
-
-
-
-
-
-</div>
-
 ## Documentation
 
 <div align="center">
