@@ -42,7 +42,7 @@
 
     <div class="nes-container with-title is-centered" style="margin-top: 20px;">
         <p class="title">Resources</p>
-        <ul class="nes-list is-disc">
+        <ul class="nes-list">
             {% for resource in resources %}
                 <li>
                     <span class="nes-text is-primary">{{ resource.resource_type }} ({{ resource.filename.split('.')[-1] }})</span><br>
