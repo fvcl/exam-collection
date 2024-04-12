@@ -18,11 +18,11 @@
             <p class="text-gray-700"><strong>Course:</strong> {{ resource.course | default('N/A', true) }}</p>
             <p class="text-gray-700"><strong>Has Solution:</strong> {{ 'Yes' if resource.has_solution else 'No' }}</p>
         </div>
-        <div class="post-footer">
+    </div>
+     <div class="post-footer">
             <section id="isso-thread"></section>
             <script data-isso="https://isso.fvcl.ch/" src="https://isso.fvcl.ch/js/embed.min.js"></script>
         </div>
-    </div>
 </div>
 </body>
 </html>
