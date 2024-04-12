@@ -33,7 +33,7 @@ class UploadForm(FlaskForm):
     course = StringField('Course')
     has_solution = BooleanField('Has Solution')
     resource_type_choices = ['Exam', 'Summary', 'Homework', 'Cheat Sheet', 'Other']
-    resource_type = StringField('Resource Type', validators=[DataRequired()])
+    resource_type = SelectField('Resource Type', choices=resource_type_choices, validators=[DataRequired()])
 
 
 class Resource(db.Model):

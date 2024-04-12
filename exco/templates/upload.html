@@ -39,9 +39,8 @@
                 <label for="has_solution" class="ml-2 block text-sm text-gray-900">Has Solution</label>
             </div>
             <div class="flex items-center">
-                <select id="resource_type"
-                        {{ form.resource_type(class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded")}}
-                <label for="resource_type" class="ml-2 block text-sm text-gray-900">Resource Type</label>
+                <label for="resource_type" class="block text-sm font-medium text-gray-700">Resource Type</label>
+                {{ form.resource_type(class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm") }}
             </div>
             <div>
                 <button type="submit"
