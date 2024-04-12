@@ -52,8 +52,18 @@ with app.app_context():
 # Page Routes
 @app.route('/')
 def index():
-    resources = Resource.query.all()  # Query all resources from the database
-    return render_template('index.html', resources=resources)
+    selected_course = request.args.get('course')
+    if selected_course:
+        resources = Resource.query.filter_by(course=selected_course).all()
+    else:
+        resources = Resource.query.all()
+
+    # Query all distinct courses for the filter dropdown
+    courses = Resource.query.with_entities(Resource.course).distinct().all()
+    courses = [c[0] for c in courses]  # Convert list of tuples to list of strings
+
+    return render_template('index.html', resources=resources, courses=courses, selected_course=selected_course)
+
 
 
 @app.route('/upload', methods=['GET', 'POST'])
