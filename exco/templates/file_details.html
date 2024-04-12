@@ -2,25 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <title>{{ resource.filename }}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
-    <div class="container mx-auto p-8">
-        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="p-5">
-                <h2 class="text-2xl font-bold mb-2 text-gray-800">{{ resource.filename }}</h2>
-                <p class="text-gray-700"><strong>Uploaded by:</strong> {{ resource.uploader }}</p>
-                <p class="text-gray-700"><strong>Description:</strong> {{ resource.description | default('N/A', true) }}</p>
-                <p class="text-gray-700"><strong>Year:</strong> {{ resource.year }}</p>
-                <p class="text-gray-700"><strong>Course:</strong> {{ resource.course | default('N/A', true) }}</p>
-                <p class="text-gray-700"><strong>Has Solution:</strong> {{ 'Yes' if resource.has_solution else 'No' }}</p>
-            </div>
-            <div class="p-5 border-t border-gray-200">
-                <div id="commento"></div>
-                <script defer src="https://hosted-apps-commentoplusplus.ifrudj.easypanel.host/js/commento.js"></script>
-            </div>
+<div class="container mx-auto p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="p-5">
+            <h2 class="text-2xl font-bold mb-2 text-gray-800">{{ resource.filename }}</h2>
+            <p class="text-gray-700"><strong>Uploaded by:</strong> {{ resource.uploader }}</p>
+            <p class="text-gray-700"><strong>Description:</strong> {{ resource.description | default('N/A', true) }}</p>
+            <p class="text-gray-700"><strong>Year:</strong> {{ resource.year }}</p>
+            <p class="text-gray-700"><strong>Course:</strong> {{ resource.course | default('N/A', true) }}</p>
+            <p class="text-gray-700"><strong>Has Solution:</strong> {{ 'Yes' if resource.has_solution else 'No' }}</p>
+        </div>
+        <div class="p-5 border-t border-gray-200">
+            <div id="commento"></div>
+            <script defer src="https://hosted-apps-commentoplusplus.ifrudj.easypanel.host/js/commento.js"></script>
         </div>
     </div>
+</div>
 </body>
 </html>
