@@ -38,7 +38,7 @@
             <li class="px-6 py-4">
                 <div class="flex justify-between">
                     <div class="flex-1 min-h-[100px]"> <!-- Apply minimum height here -->
-                        <div class="text-sm font-medium text-gray-900">{{ resource.resource_type }} (..{{ resource.filename[-1:-8] }})
+                        <div class="text-sm font-medium text-gray-900">{{ resource.resource_type }} (..{{ resource.filename[-8:-1:] }})
                         </div>
                         <div class="text-sm text-gray-500">Uploaded by {{ resource.uploader }}</div>
                         <div class="text-sm text-gray-500">{{ resource.course }} ({{ resource.age }} years ago)
