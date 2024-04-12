@@ -37,14 +37,16 @@
                     <div class="flex justify-between">
                         <div>
                             <div class="text-sm font-medium text-gray-900">{{ resource.filename }}</div>
-                            <div class="text-sm text-gray-500">{{ resource.uploader }}, {{ resource.year }}</div>
-                            <div class="text-sm text-gray-500">{{ resource.course }}</div>
+                            <div class="text-sm text-gray-500">Uploaded by {{ resource.uploader }}</div>
+                            <div class="text-sm text-gray-500">{{ resource.course }} ({{ resource.age }} years ago)
+                            </div>
                             <div class="text-sm text-gray-500">{{ 'Solution Available' if resource.has_solution else 'No Solution' }}</div>
                         </div>
                         <div>
                             <a href="{{ url_for('static', filename='data/' + resource.filename) }}" target="_blank"
                                class="text-blue-600 hover:text-blue-900">Download</a>
-                            <a href="{{ url_for('file_details', file_id=resource.id) }}">Discussion</a>
+                            <a href="{{ url_for('file_details', file_id=resource.id) }}"
+                               class="text-blue-600 hover:text-blue-900">Discussion</a>
                         </div>
                     </div>
                     {% if resource.description %}

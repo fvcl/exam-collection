@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-import os
+import os, time
 from flask_wtf import FlaskForm
 from wtforms import StringField, FileField, TextAreaField, BooleanField, IntegerField
 from wtforms.validators import DataRequired
@@ -61,6 +61,10 @@ def index():
     # Query all distinct courses for the filter dropdown
     courses = Resource.query.with_entities(Resource.course).distinct().all()
     courses = [c[0] for c in courses]  # Convert list of tuples to list of strings
+
+    # add "resource_age" field containing the number of years since the resource was released
+    for resource in resources:
+        resource.age = time.localtime().tm_year - resource.year
 
     return render_template('index.html', resources=resources, courses=courses, selected_course=selected_course)
 
