@@ -18,9 +18,9 @@
             <p class="text-gray-700"><strong>Course:</strong> {{ resource.course | default('N/A', true) }}</p>
             <p class="text-gray-700"><strong>Has Solution:</strong> {{ 'Yes' if resource.has_solution else 'No' }}</p>
         </div>
-        <div class="p-5 border-t border-gray-200">
-            <div id="commento"></div>
-            <script defer src="https://hosted-apps-commentoplusplus.ifrudj.easypanel.host/js/commento.js"></script>
+        <div class="post-footer">
+            <section id="isso-thread"></section>
+            <script data-isso="https://hosted-apps-isso.ifrudj.easypanel.host/" src="https://hosted-apps-isso.ifrudj.easypanel.host/js/embed.min.js"></script>
         </div>
     </div>
 </div>
