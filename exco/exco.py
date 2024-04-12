@@ -49,7 +49,6 @@ class Resource(db.Model):
 
 # Create the database tables
 with app.app_context():
-    db.drop_all()
     db.create_all()
 
 
