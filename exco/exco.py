@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os, time
 from flask_wtf import FlaskForm
-from wtforms import StringField, FileField, TextAreaField, BooleanField, IntegerField
+from wtforms import StringField, FileField, TextAreaField, BooleanField, IntegerField, SelectField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
 try:
