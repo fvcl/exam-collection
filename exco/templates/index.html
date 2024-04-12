@@ -48,11 +48,11 @@
                         </div>
                         <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
                             <a href="{{ url_for('static', filename='data/' + resource.filename) }}" target="_blank"
-                               class="flex items-center justify-center gap-2 bg-blue-500 text-white hover:bg-blue-700 p-2 rounded-lg transition duration-150 ease-in-out">
+                               class="inline-block bg-blue-500 text-white hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-150 ease-in-out text-center w-32">
                                 View
                             </a>
                             <a href="{{ url_for('file_details', file_id=resource.id) }}"
-                               class="flex items-center justify-center gap-2 bg-green-500 text-white hover:bg-green-700 p-2 rounded-lg transition duration-150 ease-in-out">
+                               class="inline-block bg-green-500 text-white hover:bg-green-700 px-4 py-2 rounded-lg transition duration-150 ease-in-out text-center w-32">
                                 Discussion
                             </a>
                         </div>
