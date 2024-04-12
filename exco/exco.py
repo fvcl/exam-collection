@@ -32,6 +32,8 @@ class UploadForm(FlaskForm):
     year = IntegerField('Year', default=2024)
     course = StringField('Course')
     has_solution = BooleanField('Has Solution')
+    resource_type_choices = ['Exam', 'Summary', 'Homework', 'Cheat Sheet', 'Other']
+    resource_type = StringField('Resource Type', validators=[DataRequired()])
 
 
 class Resource(db.Model):
@@ -42,10 +44,12 @@ class Resource(db.Model):
     year = db.Column(db.Integer, nullable=True)
     course = db.Column(db.String(128), nullable=True)
     has_solution = db.Column(db.Boolean, nullable=False)
+    resource_type = db.Column(db.String(128), nullable=False)
 
 
 # Create the database tables
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
 
@@ -81,11 +85,12 @@ def upload_page():
         year = form.year.data
         course = form.course.data
         has_solution = form.has_solution.data
+        resource_type = form.resource_type.data
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # save file to FTP server
         send_file_to_ftp_server(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], filename))
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course,
-                            has_solution=has_solution)
+                            has_solution=has_solution, resource_type=resource_type)
         db.session.add(resource)
         db.session.commit()
         return redirect(url_for('index'))
