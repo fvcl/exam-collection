@@ -15,8 +15,10 @@
         <div class="title-bar-text">Resource Library (DEVELOPMENT VERSION, UPLOADED DOCUMENTS MAY NOT PERSIST)</div>
     </div>
     <div class="window-body">
-        <h1 style="font-size: 18px;">Resource Library</h1>
-        <button class="button" onclick="location.href='{{ url_for('upload_page') }}'">Upload New Resource</button>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Resource Library</h1>
+            <button class="button" onclick="location.href='{{ url_for('upload_page') }}'">Upload New Resource</button>
+        </div>
         <!-- Filter Form -->
         <form action="{{ url_for('index') }}" method="get" style="margin-top: 10px;">
             <label class="field-row-stacked">
@@ -29,33 +31,33 @@
                 </select>
             </label>
         </form>
-        {% for resource in resources %}
         <div class="window" style="margin-top: 10px;">
-            <div class="window-body">
-                <div class="flex justify-between">
-                    <div>
-                        <div>{{ resource.resource_type }} ({{ resource.filename.split('.')[-1] }})</div>
-                        <div>Uploaded by {{ resource.uploader }}</div>
-                        <div>{{ resource.course }} ({{ resource.age }} years ago)</div>
-                        <div>{{ 'Solution Available' if resource.has_solution else 'No Solution' }}</div>
-                        {% if resource.description %}
-                        <p>{{ resource.description }}</p>
-                        {% endif %}
-                    </div>
-                    <div class="flex gap-4">
-                        <button class="button" onclick="location.href='{{ url_for('static', filename='data/' + resource.filename) }}'">Download</button>
-                        <button class="button" onclick="location.href='{{ url_for('file_details', file_id=resource.id) }}'">Discussion</button>
-                    </div>
-                </div>
-            </div>
+            <ul class="tree-view">
+                {% for resource in resources %}
+                <li class="tree-item">
+                    <span class="tree-item-name">
+                        <div class="flex justify-between">
+                            <div>
+                                <div>{{ resource.resource_type }} ({{ resource.filename.split('.')[-1] }})</div>
+                                <div>Uploaded by {{ resource.uploader }}</div>
+                                <div>{{ resource.course }} ({{ resource.age }} years ago)</div>
+                                <div>{{ 'Solution Available' if resource.has_solution else 'No Solution' }}</div>
+                                {% if resource.description %}
+                                <p>{{ resource.description }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="flex gap-4">
+                                <button class="button" onclick="location.href='{{ url_for('static', filename='data/' + resource.filename) }}'">Download</button>
+                                <button class="button" onclick="location.href='{{ url_for('file_details', file_id=resource.id) }}'">Discussion</button>
+                            </div>
+                        </div>
+                    </span>
+                </li>
+                {% else %}
+                <li class="tree-item"><span class="tree-item-name">No resources found.</span></li>
+                {% endfor %}
+            </ul>
         </div>
-        {% else %}
-        <div class="window" style="margin-top: 10px;">
-            <div class="window-body">
-                <span>No resources found.</span>
-            </div>
-        </div>
-        {% endfor %}
     </div>
 </div>
 </body>
