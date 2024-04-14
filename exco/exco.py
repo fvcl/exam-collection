@@ -23,7 +23,6 @@ app.config['UPLOAD_FOLDER'] = 'static/data'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-get_files_from_ftp_server()
 
 class UploadForm(FlaskForm):
     file = FileField('File', validators=[FileRequired()])
