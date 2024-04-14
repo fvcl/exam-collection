@@ -4,68 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resource Library</title>
-    <!-- Include Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include 98.css -->
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
     <!-- Favicon -->
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
-<body class="bg-gray-100">
-<div class="container mx-auto mt-10 px-4">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-xl font-semibold">Resource Library (DEVELOPMENT VERSION, UPLOADED DOCUMENTS MAY NOT PERSIST)</h1>
-        <a href="{{ url_for('upload_page') }}"
-           class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">Upload
-            New Resource</a>
+<body>
+<div class="window" style="margin: 10px auto; width: 90%;">
+    <div class="title-bar">
+        <div class="title-bar-text">Resource Library (DEVELOPMENT VERSION, UPLOADED DOCUMENTS MAY NOT PERSIST)</div>
     </div>
-    <!-- Filter Form -->
-    <div class="mb-4">
-        <form action="{{ url_for('index') }}" method="get">
-            <label for="course" class="block text-sm font-medium text-gray-700">Filter by Subject:</label>
-            <select name="course" id="course" onchange="this.form.submit()"
-                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                <option value="">All Subjects</option>
-                {% for course in courses %}
-                    <option value="{{ course }}" {% if selected_course == course %}
-                            selected {% endif %}>{{ course }}</option>
-                {% endfor %}
-            </select>
+    <div class="window-body">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>Resource Library</h1>
+            <button class="button" onclick="location.href='{{ url_for('upload_page') }}'">Upload New Resource</button>
+        </div>
+        <!-- Filter Form -->
+        <form action="{{ url_for('index') }}" method="get" style="margin-top: 10px;">
+            <label class="field-row-stacked">
+                <span class="field-row-label">Filter by Subject:</span>
+                <select class="field-row-input" name="course" id="course" onchange="this.form.submit()">
+                    <option value="">All Subjects</option>
+                    {% for course in courses %}
+                    <option value="{{ course }}" {% if selected_course == course %} selected {% endif %}>{{ course }}</option>
+                    {% endfor %}
+                </select>
+            </label>
         </form>
+        <div class="window" style="margin-top: 10px;">
+            <ul class="tree-view">
+                {% for resource in resources %}
+                <li class="tree-item">
+                    <span class="tree-item-name">
+                        <div class="flex justify-between">
+                            <div>
+                                <div>{{ resource.resource_type }} ({{ resource.filename.split('.')[-1] }})</div>
+                                <div>Uploaded by {{ resource.uploader }}</div>
+                                <div>{{ resource.course }} ({{ resource.age }} years ago)</div>
+                                <div>{{ 'Solution Available' if resource.has_solution else 'No Solution' }}</div>
+                                {% if resource.description %}
+                                <p>{{ resource.description }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="flex gap-4">
+                                <button class="button" onclick="location.href='{{ url_for('static', filename='data/' + resource.filename) }}'">Download</button>
+                                <button class="button" onclick="location.href='{{ url_for('file_details', file_id=resource.id) }}'">Discussion</button>
+                            </div>
+                        </div>
+                    </span>
+                </li>
+                {% else %}
+                <li class="tree-item"><span class="tree-item-name">No resources found.</span></li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-
-    <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
-    <ul class="divide-y divide-gray-200">
-        {% for resource in resources %}
-            <li class="px-6 py-4">
-                <div class="flex justify-between">
-                    <div class="flex-1 min-h-[100px]"> <!-- Apply minimum height here -->
-                        <div class="text-sm font-medium text-gray-900">{{ resource.resource_type }} ({{ resource.filename.split('.')[-1] }})
-                        </div>
-                        <div class="text-sm text-gray-500">Uploaded by {{ resource.uploader }}</div>
-                        <div class="text-sm text-gray-500">{{ resource.course }} ({{ resource.age }} years ago)
-                        </div>
-                        <div class="text-sm text-gray-500">{{ 'Solution Available' if resource.has_solution else 'No Solution' }}</div>
-                        {% if resource.description %}
-                            <p class="mt-2 text-sm text-gray-600">{{ resource.description }}</p>
-                        {% endif %}
-                    </div>
-                    <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                        <a href="{{ url_for('static', filename='data/' + resource.filename) }}" target="_blank"
-                           class="inline-block bg-blue-500 text-white hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-150 ease-in-out text-center w-32">
-                            Download
-                        </a>
-                        <a href="{{ url_for('file_details', file_id=resource.id) }}"
-                           class="inline-block bg-green-500 text-white hover:bg-green-700 px-4 py-2 rounded-lg transition duration-150 ease-in-out text-center w-32">
-                            Discussion
-                        </a>
-                    </div>
-                </div>
-            </li>
-        {% else %}
-            <li class="px-6 py-4">No resources found.</li>
-        {% endfor %}
-    </ul>
-</div>
-
 </div>
 </body>
 </html>
