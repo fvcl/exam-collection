@@ -68,7 +68,7 @@ def index():
     for resource in resources:
         resource.age = time.localtime().tm_year - resource.year
 
-    return render_template('index.html', resources=resources, courses=courses, selected_course=selected_course)
+    return render_template('index.html', resources=resources, courses=courses, selected_course=selected_course, types=UploadForm.resource_type_choices)
 
 
 
