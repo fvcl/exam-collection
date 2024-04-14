@@ -41,9 +41,6 @@
                         {% if resource.description %}
                         <p>{{ resource.description }}</p>
                         {% endif %}
-                        {% else %}
-                        <p>No description available.</p>
-                        {% endif %}
                     </div>
                     <div class="flex gap-4">
                         <button class="button" onclick="location.href='{{ url_for('static', filename='data/' + resource.filename) }}'">Download</button>
