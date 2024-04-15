@@ -130,7 +130,7 @@ def upload_page():
         db.session.add(resource)
         db.session.commit()
         print(format_date_info("REQS"),
-              f"Uploaded file '{filename}' by '{uploader}' from useragent ({request.user_agent}), headers: {request.headers}")
+              f"Uploaded file '{filename}' by '{uploader}' from useragent ({request.user_agent})")
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
 
