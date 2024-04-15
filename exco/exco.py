@@ -1,3 +1,4 @@
+from datetime import datetime
 import random
 
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
@@ -32,10 +33,11 @@ if DEVELOPMENT_MODE is not True:
 
 # Configure the database
 if DEVELOPMENT_MODE is True:
-    print("[{time.asctime()}] [MAIN] [INFO]", "Running in development mode with SQLite database.")
+    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
+          "Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
 else:
-    print(f"[{time.asctime()}] [MAIN] [INFO]",
+    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
           "Running in production mode with PostgreSQL database.")
     app.config[
         'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
@@ -67,14 +69,15 @@ class Resource(db.Model):
 
 # Create the database tables (if they don't exist)
 with app.app_context():
-    print("[{time.asctime()}] [MAIN] [INFO]", "Creating database tables.")
+    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]", "Creating database tables.")
     db.create_all()
 
 
 # Page Routes
 @app.route('/')
 def index():
-    print("[{time.asctime()}] [MAIN] [INFO]", f"Index Page Requested from {request.remote_addr} ({request.user_agent})")
+    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
+          f"Index Page Requested from {request.remote_addr} ({request.user_agent})")
     selected_course = request.args.get('course')
     if selected_course:
         resources = Resource.query.filter_by(course=selected_course).all()
@@ -110,7 +113,8 @@ def upload_page():
                             has_solution=has_solution, resource_type=resource_type)
         db.session.add(resource)
         db.session.commit()
-        print(f"[{time.asctime()}] [MAIN] [INFO]", f"Uploaded file '{filename}' by '{uploader}' from {request.remote_addr} ({request.user_agent})")
+        print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
+              f"Uploaded file '{filename}' by '{uploader}' from {request.remote_addr} ({request.user_agent})")
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
 
