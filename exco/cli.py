@@ -9,26 +9,36 @@ if __name__ == '__main__':
     with app.app_context():
         session = db.session
         while True:
-            print("Enter a command:")
-            print("1. List all resources")
-            print("2. Delete a resource")
-            print("3. Exit")
+            # Match statement for different commands\
+            print("Enter command ('help' for help): ", end='')
             command = input()
-            if command == '1':
-                resources = Resource.query.all()
-                for resource in resources:
-                    print(resource)
-            elif command == '2':
-                print("Enter the ID of the resource you want to delete:")
-                resource_id = input()
-                resource = session.get(Resource, resource_id)
-                if resource:
-                    session.delete(resource)
-                    session.commit()
-                    print(f"Resource with ID {resource_id} deleted.")
-                else:
-                    print(f"Resource with ID {resource_id} not found.")
-            elif command == '3':
-                break
-            else:
-                print("Invalid command. Please try again.")
+            match command.split():
+                case ['help']:
+                    print("Commands: 'insert', 'list', 'delete ID1 ID2 [...]', 'exit'")
+                case ['list']:
+                    resources = session.query(Resource).all()
+                    for resource in resources:
+                        print(resource)
+                case ['delete']:
+                    print("Enter the IDs of the resources you want to delete, separated by spaces")
+                    continue
+                case ['delete', *file_ids]:
+                    for file_id in file_ids:
+                        resource = session.query(Resource).get(file_id)
+                        if resource:
+                            session.delete(resource)
+                            print(f"Deleted {resource}")
+                        else:
+                            print(f"Resource with id {file_id} not found.")
+                case ['insert']:
+                    print("Enter the number of mock resources to insert")
+                    continue
+                case ['insert', count]:
+                    for _ in range(int(count)):
+                        resource = Resource.generate_dummy_resource()
+                        session.add(resource)
+                    print(f"Added {count} mock resources.")
+                case ['exit']:
+                    break
+                case _:
+                    print("Invalid command. Type 'help' for help.")
