@@ -8,17 +8,34 @@ from wtforms import StringField, FileField, TextAreaField, BooleanField, Integer
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
 
+# Check if we are running in development mode
 DEVELOPMENT_MODE = os.environ.get('DEVELOPMENT_MODE', True)
 print(f"DEVELOPMENT_MODE: {DEVELOPMENT_MODE}")
+
 # make directories
 os.makedirs('db', exist_ok=True)
 os.makedirs('static/data', exist_ok=True)
 
+# Create the Flask app
 app = Flask(__name__)
 app.debug = True
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = random.randbytes(16)
 app.config['UPLOAD_FOLDER'] = 'static/data'
+
+if DEVELOPMENT_MODE is not True:
+    # Production mode configuration
+    app.config['SERVER_NAME'] = 'exams.fvcl.ch'
+    app.config['PREFERRED_URL_SCHEME'] = 'https'
+    app.config['SESSION_COOKIE_SECURE'] = True
+
+    # Add favicon URL rule
+    with app.app_context():
+        app.add_url_rule('/favicon.ico',
+                         redirect_to=url_for('static', filename='favicon.ico'))
+
+
+# Configure the database
 if DEVELOPMENT_MODE is True:
     print("Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
@@ -102,9 +119,6 @@ def file_details(file_id):
     resource = Resource.query.get_or_404(file_id)  # Fetch the specific file or return 404
     return render_template('file_details.html', resource=resource)
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
     app.run()
