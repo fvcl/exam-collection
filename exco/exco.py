@@ -20,12 +20,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = random.randbytes(16)
 app.config['UPLOAD_FOLDER'] = 'static/data'
 if DEVELOPMENT_MODE:
+    print("Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
 else:
+    print("Running in production mode with PostgreSQL database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-print(f"Initialized app with database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
 
 class UploadForm(FlaskForm):
