@@ -42,3 +42,5 @@ if __name__ == '__main__':
                     break
                 case _:
                     print("Invalid command. Type 'help' for help.")
+        session.commit()
+        session.close()
