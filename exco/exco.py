@@ -9,7 +9,7 @@ from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
 
 DEVELOPMENT_MODE = os.environ.get('DEVELOPMENT_MODE', True)
-
+print(f"DEVELOPMENT_MODE: {DEVELOPMENT_MODE}")
 # make directories
 os.makedirs('db', exist_ok=True)
 os.makedirs('static/data', exist_ok=True)
