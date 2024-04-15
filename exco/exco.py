@@ -27,6 +27,7 @@ if DEVELOPMENT_MODE is not True:
     # Production mode configuration
     app.config['SERVER_NAME'] = 'exams.fvcl.ch'
     app.config['PREFERRED_URL_SCHEME'] = 'https'
+    app.config['APPLICATION_ROOT'] = '/'
     app.config['SESSION_COOKIE_SECURE'] = True
 
 # Configure the database
@@ -112,7 +113,8 @@ def upload_page():
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
+    print(f"Request for favicon.ico from {request.remote_addr} ({request.user_agent})")
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/file/<int:file_id>')
