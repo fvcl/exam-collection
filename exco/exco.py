@@ -29,19 +29,14 @@ if DEVELOPMENT_MODE is not True:
     app.config['PREFERRED_URL_SCHEME'] = 'https'
     app.config['SESSION_COOKIE_SECURE'] = True
 
-    # Add favicon URL rule
-    with app.app_context():
-        app.add_url_rule('/favicon.ico',
-                         redirect_to=url_for('static', filename='favicon.ico'))
-
-
 # Configure the database
 if DEVELOPMENT_MODE is True:
     print("Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
 else:
     print("Running in production mode with PostgreSQL database.")
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
+    app.config[
+        'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -67,6 +62,7 @@ class Resource(db.Model):
     has_solution = db.Column(db.Boolean, nullable=False)
     resource_type = db.Column(db.String(128), nullable=False)
 
+
 # Create the database tables (if they don't exist)
 with app.app_context():
     db.create_all()
@@ -89,8 +85,8 @@ def index():
     for resource in resources:
         resource.age = time.localtime().tm_year - resource.year
 
-    return render_template('index.html', resources=resources, courses=courses, selected_course=selected_course, types=UploadForm.resource_type_choices)
-
+    return render_template('index.html', resources=resources, courses=courses, selected_course=selected_course,
+                           types=UploadForm.resource_type_choices)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -112,6 +108,11 @@ def upload_page():
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
 
 @app.route('/file/<int:file_id>')
