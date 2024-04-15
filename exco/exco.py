@@ -33,11 +33,11 @@ if DEVELOPMENT_MODE is not True:
 
 # Configure the database
 if DEVELOPMENT_MODE is True:
-    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
+    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
           "Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
 else:
-    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
+    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
           "Running in production mode with PostgreSQL database.")
     app.config[
         'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
@@ -69,14 +69,14 @@ class Resource(db.Model):
 
 # Create the database tables (if they don't exist)
 with app.app_context():
-    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]", "Creating database tables.")
+    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]", "Creating database tables.")
     db.create_all()
 
 
 # Page Routes
 @app.route('/')
 def index():
-    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
+    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
           f"Index Page Requested from {request.user_agent}")
     selected_course = request.args.get('course')
     if selected_course:
@@ -113,7 +113,7 @@ def upload_page():
                             has_solution=has_solution, resource_type=resource_type)
         db.session.add(resource)
         db.session.commit()
-        print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
+        print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
               f"Uploaded file '{filename}' by '{uploader}' from useragent ({request.user_agent}), headers: {request.headers}")
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
