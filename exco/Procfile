@@ -1,1 +1,1 @@
-web: gunicorn exco:app
+web: gunicorn app:app
