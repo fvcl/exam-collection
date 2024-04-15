@@ -19,7 +19,7 @@ app.debug = True
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = random.randbytes(16)
 app.config['UPLOAD_FOLDER'] = 'static/data'
-if DEVELOPMENT_MODE:
+if DEVELOPMENT_MODE is True:
     print("Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
 else:
