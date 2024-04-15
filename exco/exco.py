@@ -32,10 +32,11 @@ if DEVELOPMENT_MODE is not True:
 
 # Configure the database
 if DEVELOPMENT_MODE is True:
-    print("Running in development mode with SQLite database.")
+    print("[{time.asctime()}] [MAIN] [INFO]", "Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
 else:
-    print("Running in production mode with PostgreSQL database.")
+    print(f"[{time.asctime()}] [MAIN] [INFO]",
+          "Running in production mode with PostgreSQL database.")
     app.config[
         'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -66,12 +67,14 @@ class Resource(db.Model):
 
 # Create the database tables (if they don't exist)
 with app.app_context():
+    print("[{time.asctime()}] [MAIN] [INFO]", "Creating database tables.")
     db.create_all()
 
 
 # Page Routes
 @app.route('/')
 def index():
+    print("[{time.asctime()}] [MAIN] [INFO]", f"Index Page Requested from {request.remote_addr} ({request.user_agent})")
     selected_course = request.args.get('course')
     if selected_course:
         resources = Resource.query.filter_by(course=selected_course).all()
@@ -90,7 +93,7 @@ def index():
                            types=UploadForm.resource_type_choices)
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload', methods=['GET'])
 def upload_page():
     form = UploadForm()
     if form.validate_on_submit():
@@ -107,14 +110,14 @@ def upload_page():
                             has_solution=has_solution, resource_type=resource_type)
         db.session.add(resource)
         db.session.commit()
+        print(f"[{time.asctime()}] [MAIN] [INFO]", f"Uploaded file '{filename}' by '{uploader}' from {request.remote_addr} ({request.user_agent})")
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
 
 
 @app.route('/favicon.ico')
 def favicon():
-    print(f"Request for favicon.ico from {request.remote_addr} ({request.user_agent})")
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    return app.send_static_file('favicon.ico')
 
 
 @app.route('/file/<int:file_id>')
