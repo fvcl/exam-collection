@@ -9,7 +9,6 @@ from wtforms import StringField, FileField, TextAreaField, BooleanField, Integer
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
 
-DROP_TABLES = True
 
 def format_date_info(severity="INFO"):
     return f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [{severity}]"
@@ -81,9 +80,6 @@ class Resource(db.Model):
 
 # Create the database tables (if they don't exist)
 with app.app_context():
-    if DROP_TABLES:
-        print(format_date_info("BOOT"), "Dropping all database tables.")
-        db.drop_all()
     print(format_date_info("BOOT"), "Creating database tables.")
     db.create_all()
 
