@@ -10,5 +10,9 @@
 Released under [BSD 3-Clause](/LICENSE) by [@fvcl](https://github.com/fvcl).
 
 # exam-collection
-Code for the exam collection website
+Code for the exam collection website, written with flask and tailwind.
 
+# Contributing
+TODO
+## Setting up a development environment
+TODO
