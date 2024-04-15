@@ -77,7 +77,7 @@ with app.app_context():
 @app.route('/')
 def index():
     print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
-          f"Index Page Requested from {request.remote_addr} ({request.user_agent})")
+          f"Index Page Requested from {request.user_agent}")
     selected_course = request.args.get('course')
     if selected_course:
         resources = Resource.query.filter_by(course=selected_course).all()
@@ -114,7 +114,7 @@ def upload_page():
         db.session.add(resource)
         db.session.commit()
         print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')}] [MAIN] [INFO]",
-              f"Uploaded file '{filename}' by '{uploader}' from {request.remote_addr} ({request.user_agent})")
+              f"Uploaded file '{filename}' by '{uploader}' from useragent ({request.user_agent}), headers: {request.headers}")
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
 
