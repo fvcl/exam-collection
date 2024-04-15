@@ -1,15 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+import random
+
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 import os, time
 from flask_wtf import FlaskForm
 from wtforms import StringField, FileField, TextAreaField, BooleanField, IntegerField, SelectField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
-try:
-    from exco.ftp_sync import send_file_to_ftp_server, get_files_from_ftp_server
-except ImportError:
-    from ftp_sync import send_file_to_ftp_server, get_files_from_ftp_server
 
+DEVELOPMENT_MODE = os.environ.get('DEVELOPMENT_MODE', True)
 
 # make directories
 os.makedirs('db', exist_ok=True)
@@ -18,11 +17,15 @@ os.makedirs('static/data', exist_ok=True)
 app = Flask(__name__)
 app.debug = True
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-app.secret_key = 'super secret'
+app.secret_key = random.randbytes(16)
 app.config['UPLOAD_FOLDER'] = 'static/data'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
+if DEVELOPMENT_MODE:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
 
 class UploadForm(FlaskForm):
     file = FileField('File', validators=[FileRequired()])
@@ -45,8 +48,7 @@ class Resource(db.Model):
     has_solution = db.Column(db.Boolean, nullable=False)
     resource_type = db.Column(db.String(128), nullable=False)
 
-
-# Create the database tables
+# Create the database tables (if they don't exist)
 with app.app_context():
     db.create_all()
 
@@ -85,8 +87,6 @@ def upload_page():
         has_solution = form.has_solution.data
         resource_type = form.resource_type.data
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        # save file to FTP server
-        send_file_to_ftp_server(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], filename))
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course,
                             has_solution=has_solution, resource_type=resource_type)
         db.session.add(resource)
@@ -100,6 +100,9 @@ def file_details(file_id):
     resource = Resource.query.get_or_404(file_id)  # Fetch the specific file or return 404
     return render_template('file_details.html', resource=resource)
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
     app.run()
