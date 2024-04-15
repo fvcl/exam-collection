@@ -25,6 +25,7 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+print(f"Initialized app with database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
 
 class UploadForm(FlaskForm):
