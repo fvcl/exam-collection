@@ -124,7 +124,7 @@ def upload_page():
         solution_filename = solution_file.filename if solution_file else None
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         if solution_file:
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], solution_filename))
+            solution_file.save(os.path.join(app.config['UPLOAD_FOLDER'], solution_filename))
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course,
                             has_solution=has_solution, resource_type=resource_type, solution_filename=solution_filename)
         db.session.add(resource)
