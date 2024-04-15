@@ -11,7 +11,8 @@ from flask_wtf.file import FileRequired
 
 # Check if we are running in development mode
 DEVELOPMENT_MODE = os.environ.get('DEVELOPMENT_MODE', True)
-print(f"DEVELOPMENT_MODE: {DEVELOPMENT_MODE}")
+print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
+      f"Development mode is set to {DEVELOPMENT_MODE}")
 
 # make directories
 os.makedirs('db', exist_ok=True)
