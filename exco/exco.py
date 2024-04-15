@@ -67,6 +67,9 @@ class Resource(db.Model):
     has_solution = db.Column(db.Boolean, nullable=False)
     resource_type = db.Column(db.String(128), nullable=False)
 
+    def __repr__(self):
+        return f"<Resource {self.id}: {self.filename} by {self.uploader} ({self.course}, {self.year})>"
+
 
 # Create the database tables (if they don't exist)
 with app.app_context():
@@ -97,7 +100,7 @@ def index():
                            types=UploadForm.resource_type_choices)
 
 
-@app.route('/upload', methods=['GET'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload_page():
     form = UploadForm()
     if form.validate_on_submit():
