@@ -77,6 +77,10 @@ class Resource(db.Model):
     def __repr__(self):
         return f"<Resource {self.id}: {self.filename} by {self.uploader} ({self.course}, {self.year})>"
 
+    @classmethod
+    def generate_dummy_resource(cls):
+        return cls(filename='.exists', uploader='mockuser', description='mock description', year=random.randint(1990, 2024), course='mockcourse', has_solution=True, resource_type='Exam')
+
 
 # Create the database tables (if they don't exist)
 with app.app_context():
