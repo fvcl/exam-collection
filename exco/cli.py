@@ -1,10 +1,14 @@
 # This file is a CLI for interacting with the Exco database, mostly for managing and deleting resources.
-
-# Path: exco/cli.py
 try:
-    from exco.exco import Resource, app, db
+    from exco.extensions import db
+    from exco.app import app
+    from exco.models import Resource
 except ImportError:
-    from exco import Resource, app, db
+    from extensions import db
+    from app import app
+    from models import Resource
+
+
 if __name__ == '__main__':
     with app.app_context():
         session = db.session
@@ -24,7 +28,7 @@ if __name__ == '__main__':
                     continue
                 case ['delete', *file_ids]:
                     for file_id in file_ids:
-                        resource = session.query(Resource).get(file_id)
+                        resource = session.get(Resource, file_id)
                         if resource:
                             session.delete(resource)
                             print(f"Deleted {resource}")
