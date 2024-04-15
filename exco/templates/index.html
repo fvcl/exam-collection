@@ -30,15 +30,15 @@
                             selected {% endif %}>{{ course }}</option>
                 {% endfor %}
             </select>
-{#            <label for="type" class="block text-sm font-medium text-gray-700">Filter by Type:</label>#}
-{#            <select name="type" id="type" onchange="this.form.submit()"#}
-{#                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">#}
-{#                <option value="">All Types</option>#}
-{#                {% for type in types %}#}
-{#                    <option value="{{ type }}" {% if selected_type == type %}#}
-{#                            selected {% endif %}>{{ type }}</option>#}
-{#                {% endfor %}#}
-{#            </select>#}
+            {#            <label for="type" class="block text-sm font-medium text-gray-700">Filter by Type:</label>#}
+            {#            <select name="type" id="type" onchange="this.form.submit()"#}
+            {#                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">#}
+            {#                <option value="">All Types</option>#}
+            {#                {% for type in types %}#}
+            {#                    <option value="{{ type }}" {% if selected_type == type %}#}
+            {#                            selected {% endif %}>{{ type }}</option>#}
+            {#                {% endfor %}#}
+            {#            </select>#}
         </form>
     </div>
 
@@ -65,8 +65,14 @@
                         <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
                             <a href="{{ url_for('static', filename='data/' + resource.filename) }}" target="_blank"
                                class="inline-block bg-blue-500 text-white hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-150 ease-in-out text-center w-32">
-                                Download
+                                Resource
                             </a>
+                            {% if resource.solution_filename %}
+                                <a href="{{ url_for('static', filename='data/' + resource.solution_filename) }}" target="_blank"
+                                   class="inline-block bg-blue-500 text-white hover:bg-blue-700 px-4 py-2 rounded-lg transition duration-150 ease-in-out text-center w-32">
+                                    Solution
+                                </a>
+                            {% endif %}
                             <a href="{{ url_for('file_details', file_id=resource.id) }}"
                                class="inline-block bg-green-500 text-white hover:bg-green-700 px-4 py-2 rounded-lg transition duration-150 ease-in-out text-center w-32">
                                 Discussion

@@ -37,8 +37,13 @@
             </div>
             <div class="flex items-center">
                 <input id="has_solution"
+                       onchange="document.getElementById('solution_container').style.display = this.checked ? 'block' : 'none'"
                        type="checkbox" {{ form.has_solution(class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded") }}
                 <label for="has_solution" class="ml-2 block text-sm text-gray-900">Has Solution</label>
+            </div>
+            <div class="flex items-center" id="solution_container" style="display: none">
+                <label for="solution" class="block text-sm font-medium text-gray-700">Solution (if the solution is in a seperate file)</label>
+                {{ form.solution_filename(class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md") }}
             </div>
             <div class="flex items-center">
                 <label for="resource_type" class="block text-sm font-medium text-gray-700">Resource Type</label>
