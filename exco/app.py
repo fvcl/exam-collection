@@ -20,18 +20,18 @@ DEVELOPMENT_MODE = os.environ.get('DEVELOPMENT_MODE', True)
 print(format_date_info("BOOT"),
       f"Development mode is set to {DEVELOPMENT_MODE}")
 
-# make directories
-os.makedirs('db', exist_ok=True)
-os.makedirs('static/data', exist_ok=True)
-
-# Create the Flask app
-
+# Generic configuration
 app.debug = True
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = random.randbytes(16)
 app.config['UPLOAD_FOLDER'] = 'static/data'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['APPLICATION_ROOT'] = '/'
 
+# Mode-specific configuration
 if DEVELOPMENT_MODE is True:
+    # Create the database directory if it doesn't exist
+    os.makedirs('db', exist_ok=True)
     # Development mode configuration
     print(format_date_info("BOOT"), "Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
@@ -44,8 +44,6 @@ else:
     app.config[
         'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['APPLICATION_ROOT'] = '/'
 
 # Initialize the database
 db.init_app(app)
