@@ -9,9 +9,15 @@ from wtforms import StringField, FileField, TextAreaField, BooleanField, Integer
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileRequired
 
+DROP_TABLES = True
+
+def format_date_info(severity="INFO"):
+    return f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [{severity}]"
+
+
 # Check if we are running in development mode
 DEVELOPMENT_MODE = os.environ.get('DEVELOPMENT_MODE', True)
-print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
+print(format_date_info("BOOT"),
       f"Development mode is set to {DEVELOPMENT_MODE}")
 
 # make directories
@@ -34,17 +40,16 @@ if DEVELOPMENT_MODE is not True:
 
 # Configure the database
 if DEVELOPMENT_MODE is True:
-    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
+    print(format_date_info("BOOT"),
           "Running in development mode with SQLite database.")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'db', 'exam-collection.db')
 else:
-    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
+    print(format_date_info("BOOT"),
           "Running in production mode with PostgreSQL database.")
     app.config[
         'SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:ac69327d785a127a800e@diy-prod_exam-collection-db:5432/diy-prod'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
 
 class UploadForm(FlaskForm):
     file = FileField('File', validators=[FileRequired()])
@@ -53,8 +58,10 @@ class UploadForm(FlaskForm):
     year = IntegerField('Year', default=2024)
     course = StringField('Course')
     has_solution = BooleanField('Has Solution')
+    solution_filename = FileField('Solution')
     resource_type_choices = ['Exam', 'Summary', 'Homework', 'Cheat Sheet', 'Other']
     resource_type = SelectField('Resource Type', choices=resource_type_choices, validators=[DataRequired()])
+
 
 
 class Resource(db.Model):
@@ -65,6 +72,7 @@ class Resource(db.Model):
     year = db.Column(db.Integer, nullable=True)
     course = db.Column(db.String(128), nullable=True)
     has_solution = db.Column(db.Boolean, nullable=False)
+    solution_filename = db.Column(db.String(128), nullable=True)
     resource_type = db.Column(db.String(128), nullable=False)
 
     def __repr__(self):
@@ -73,14 +81,18 @@ class Resource(db.Model):
 
 # Create the database tables (if they don't exist)
 with app.app_context():
-    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]", "Creating database tables.")
+    if DROP_TABLES:
+        print(format_date_info("BOOT"), "Dropping all database tables.")
+        db.drop_all()
+    print(format_date_info("BOOT"), "Creating database tables.")
     db.create_all()
+
 
 
 # Page Routes
 @app.route('/')
 def index():
-    print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
+    print(format_date_info("REQS"),
           f"Index Page Requested from {request.user_agent}")
     selected_course = request.args.get('course')
     if selected_course:
@@ -112,12 +124,16 @@ def upload_page():
         course = form.course.data
         has_solution = form.has_solution.data
         resource_type = form.resource_type.data
+        solution_file = form.solution_filename.data
+        solution_filename = solution_file.filename if solution_file else None
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        if solution_file:
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], solution_filename))
         resource = Resource(filename=filename, uploader=uploader, description=description, year=year, course=course,
-                            has_solution=has_solution, resource_type=resource_type)
+                            has_solution=has_solution, resource_type=resource_type, solution_filename=solution_filename)
         db.session.add(resource)
         db.session.commit()
-        print(f"[{datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S')} +0000] [MAIN] [INFO]",
+        print(format_date_info("REQS"),
               f"Uploaded file '{filename}' by '{uploader}' from useragent ({request.user_agent}), headers: {request.headers}")
         return redirect(url_for('index'))
     return render_template('upload.html', form=form)
