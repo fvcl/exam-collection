@@ -17,6 +17,11 @@ except ImportError:
 # Page Routes
 @app.route('/')
 def index():
+    """
+    The index page of the website. This page displays all the resources in the database.
+    The page is rendered with the resources (all or filtered by course) and the courses for the filter dropdown.
+    See: templates/index.html
+    """
     print(format_date_info("REQS"), f"Index Page Requested from {request.user_agent}")
     selected_course = request.args.get('course')
     if selected_course:
@@ -38,6 +43,10 @@ def index():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_page():
+    """
+    The upload page of the website. This page allows users to upload files to the database.
+    See: templates/upload.html
+    """
     form = UploadForm()
     if form.validate_on_submit():
         file = form.file.data
@@ -64,10 +73,18 @@ def upload_page():
 
 @app.route('/favicon.ico')
 def favicon():
+    """
+    Since Flask does not serve files from the root directory by default, this route is needed to serve the favicon.
+    """
     return app.send_static_file('favicon.ico')
 
 
 @app.route('/file/<int:file_id>')
 def file_details(file_id):
+    """
+    The file details page of the website. This page displays the details of a specific file, as well as the
+    commento++ comments section.
+    See: templates/file_details.html
+    """
     resource = Resource.query.get_or_404(file_id)  # Fetch the specific file or return 404
     return render_template('file_details.html', resource=resource)
