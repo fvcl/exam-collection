@@ -5,10 +5,8 @@
 [![open issues - exam-collection](https://img.shields.io/github/issues/fvcl/exam-collection)](https://github.com/fvcl/exam-collection/issues)
 [![closed issues - exam collection](https://img.shields.io/github/issues-closed/fvcl/exam-collection)](https://github.com/fvcl/exam-collection/issues)
 
+[Live Site](https://exams.fvcl.ch)
 
-## License
-
-Released under [BSD 3-Clause](/LICENSE) by [@fvcl](https://github.com/fvcl).
 
 # exam-collection
 Code for the exam collection website, written with flask and tailwind.
@@ -17,3 +15,8 @@ Code for the exam collection website, written with flask and tailwind.
 TODO
 ## Setting up a development environment
 TODO
+
+
+## License
+
+Released under [BSD 3-Clause](/LICENSE) by [@fvcl](https://github.com/fvcl).
