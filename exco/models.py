@@ -4,7 +4,6 @@ except ImportError:
     from extensions import db
 import random
 
-
 class Resource(db.Model):
     """
     Defines a study resource that has been uploaded to the database
