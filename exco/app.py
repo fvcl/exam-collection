@@ -61,7 +61,7 @@ with app.app_context():
         import routes
     print(format_date_info("BOOT"), "Initialized routes.")
 
-
+print(format_date_info("BOOT"), "Application is ready.")
 
 
 if __name__ == '__main__':
