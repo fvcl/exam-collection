@@ -3,9 +3,9 @@ This is a CLI for interacting with the Exco database, mostly for managing and de
 
 Current commands:
 - 'help': Print this explanation
-- 'list': List all resources in the database
+- 'list TABLENAME': List all resources in the database
 - 'delete ID1 [ID2, ...]': Delete resources with the given ID(s)
-- 'insert COUNT': Insert mock resources into the database (COUNT is the number of resources to insert)
+- 'insert TABLENAME COUNT': Insert mock resources into the database. COUNT is the number of resources to insert, TABLENAME is the name of the model class to use (This is case-sensitive). The model class must have a 'generate_mock_data' method
 - 'recreate': Recreate the database tables (deletes all data)
 - 'search [query]': Search for resources with the given query string in the filename, uploader, description, course, or resource type
 - 'exit': Exit the CLI
@@ -17,10 +17,12 @@ try:
     from exco.extensions import db
     from exco.app import app
     from exco.models import Resource
+    from exco.utils import get_db_models
 except ImportError:
     from extensions import db
     from app import app
     from models import Resource
+    from utils import get_db_models
 
 
 class DatabaseSession:
@@ -48,8 +50,12 @@ if __name__ == '__main__':
                 match command.split():
                     case ['help']:
                         print(explanation)
-                    case ['list']:
-                        resources = session.query(Resource).all()
+                    case ['list', tablename]:
+                        models = get_db_models()
+                        if tablename not in models:
+                            print(f"Model {tablename} not found.")
+                            break
+                        resources = session.query(models[tablename]).all()
                         for resource in resources:
                             print(resource)
                     case ['delete']:
@@ -66,10 +72,16 @@ if __name__ == '__main__':
                     case ['insert']:
                         print("Enter the number of mock resources to insert")
                         continue
-                    case ['insert', count]:
-                        for _ in range(int(count)):
-                            resource = Resource.generate_dummy_resource()
-                            session.add(resource)
+                    case ['insert', class_name, count]:
+                        models = get_db_models()
+                        if class_name not in models:
+                            print(f"Model {class_name} not found.")
+                            break
+                        model = models[class_name]
+                        if "generate_dummy_resource" in dir(model):
+                            for _ in range(int(count)):
+                                resource = model.generate_mock_data()
+                                session.add(resource)
                         print(f"Added {count} mock resources.")
                     case ['recreate']:
                         if input(
@@ -82,10 +94,10 @@ if __name__ == '__main__':
                         continue
                     case ['search', query]:
                         resources = session.query(Resource).filter(Resource.filename.contains(query) |
-                                                                  Resource.uploader.contains(query) |
-                                                                  Resource.description.contains(query) |
-                                                                  Resource.course.contains(query) |
-                                                                  Resource.resource_type.contains(query)).all()
+                                                                   Resource.uploader.contains(query) |
+                                                                   Resource.description.contains(query) |
+                                                                   Resource.course.contains(query) |
+                                                                   Resource.resource_type.contains(query)).all()
                         for resource in resources:
                             print(resource)
                     case ['exit']:
