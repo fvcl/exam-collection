@@ -1,2 +1,5 @@
 .idea
 venv
+exco/db
+exco/static/data/*.pdf
+exco/static/data/*.zip
