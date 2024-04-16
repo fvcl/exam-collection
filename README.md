@@ -24,7 +24,8 @@ Welcome and thank you for considering contributing to our project! We're thrille
 - **Send a message to a project owner**: Currently these are Luc and Lucas, if unsure send a message to fachverein@cl.uzh.ch or ask whoever is webmaster
 - **Create a branch**: After you're added to the project, you should be able to create branches and create pull requests in the repo
 
-####
+
+#### If you are an external contributor
 - **Fork the repository**: Make sure to fork the repository and work from your copy.
 - **Branching**: Create a new branch for each feature or fix, naming it something relevant to the task you're addressing.
 - **Commit messages**: Keep your commit messages clear and informative, describing what has been done and why.
