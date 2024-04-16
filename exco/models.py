@@ -35,6 +35,6 @@ class Resource(db.Model):
         return f"<Resource {self.id}: {self.filename} by {self.uploader} ({self.course}, {self.year})>"
 
     @classmethod
-    def generate_dummy_resource(cls):
+    def generate_mock_data(cls):
         return cls(filename='.exists', uploader='mockuser', description='mock description',
                    year=random.randint(1990, 2024), course='mockcourse', has_solution=True, resource_type='Exam')
