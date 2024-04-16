@@ -24,12 +24,18 @@ def index():
     The page is rendered with the resources (all or filtered by course) and the courses for the filter dropdown.
     See: templates/index.html
     """
+    session = db.session
     print(format_date_info("REQS"), f"Index Page Requested from {request.user_agent}")
     selected_course = request.args.get('course')
-    if selected_course:
-        resources = Resource.query.filter_by(course=selected_course).all()
+    selected_type = request.args.get('type')
+    if selected_course and selected_type:
+        resources = session.query(Resource).filter_by(course=selected_course, resource_type=selected_type).all()
+    elif selected_type:
+        resources = session.query(Resource).filter_by(resource_type=selected_type).all()
+    elif selected_course:
+        resources = session.query(Resource).filter_by(course=selected_course).all()
     else:
-        resources = Resource.query.all()
+        resources = session.query(Resource).all()
 
     # Query all distinct courses for the filter dropdown
     courses = Resource.query.with_entities(Resource.course).distinct().all()
@@ -40,7 +46,7 @@ def index():
         resource.age = time.localtime().tm_year - resource.year
 
     return render_template('index.html', resources=resources, courses=courses, selected_course=selected_course,
-                           types=UploadForm.resource_type_choices)
+                            types=UploadForm.resource_type_choices, selected_type=selected_type)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
