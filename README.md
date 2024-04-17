@@ -104,35 +104,6 @@ To interact with the database locally, you can use `cli.py` to create the tables
 ```shell
 python exco/cli.py
 ```
-
-## Contribution Guidelines
-
-Welcome and thank you for considering contributing to our project! We're thrilled to have you onboard. Here are a few guidelines that we'd like you to follow so that we can have a smooth and enjoyable collaboration process.
-
-### Getting Started
-- **Read the docs**: Before you contribute, please read through the documentation and the setup guide in our README. This will help you understand the project better and make your contribution more effective.
-- **Check out the issues**: Take a look at the existing issues for tasks that need help or improvements. Feel free to ask for clarifications if something isn’t clear.
-
-### Making Contributions
-- **Fork the repository**: Make sure to fork the repository and work from your copy.
-- **Branching**: Create a new branch for each feature or fix, naming it something relevant to the task you're addressing.
-- **Commit messages**: Keep your commit messages clear and informative, describing what has been done and why.
-
-### Pull Requests
-- **Open a pull request (PR)**: Once you’re ready to submit your changes, make a pull request to the main branch. Describe what your code does and link to any relevant issues.
-- **Code review**: Wait for at least one code review. We might suggest some changes or improvements.
-- **Integration**: Once approved, your PR will be merged into the main branch!
-
-### Stay Involved
-- **Feedback**: Don’t hesitate to leave feedback. We're always trying to improve and your opinions matter!
-- **Ask questions**: Always feel free to ask questions if you’re unsure about something. We're here to help!
-
-### Code of Conduct
-- **Respectful communication**: Please be polite and respectful in your interactions with other community members. We strive to provide a welcoming environment for everyone.
-
-Thank you for contributing to our project! We’re excited to see what you bring to the community.
-
-
 ## License
 
 Released under [BSD 3-Clause](/LICENSE) by [@fvcl](https://github.com/fvcl).
